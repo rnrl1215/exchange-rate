@@ -26,9 +26,9 @@
 
         <div class="container">
             <label>수취국가: </label>
-            <select name="countryCode" th:onchange="|location.href='@{/exchange-rate}'|">
+            <select id="countryCode" name="countryCode" th:onchange="|location.href='@{/exchange-rate/{code}(code=${countryCode})}'|">
                 <option th:each="code : ${T(toyproject.exchangerate.data.CountryCode).values()}"
-                        th:value="${code}" th:text="${code.displayCountryCode}"
+                        th:value="${code}" th:text="${code.description}"
                         ></option>
             </select>
         </div>

@@ -1,17 +1,16 @@
 package toyproject.exchangerate.data;
 
+
+import lombok.Getter;
+
+@Getter
 public enum CountryCode {
     KRW("한국(KRW)"),
     JPY("일본(JPY)"),
     PHP("필리핀(PHP)");
 
-    private final String displayCountryCode;
-
+    private final String description;
     CountryCode(String  countryCode) {
-        this.displayCountryCode = countryCode;
-    }
-
-    public String getDisplayCountryCode() {
-        return displayCountryCode;
+        this.description = countryCode;
     }
 }
