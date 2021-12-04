@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+            href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>환율계산기</title>
+
+    <style>
+    .container {
+         max-width: 560px;
+     }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="py-5 text-center">
+            <h1>환율 계산</h1>
+        </div>
+
+        <div class="container">
+            <label>송금국가: </label>
+            <label>미국(USD)</label>
+        </div>
+
+        <div class="container">
+            <label>수취국가: </label>
+            <select name="countryCode" th:onchange="|location.href='@{/exchange-rate}'|">
+                <option th:each="code : ${T(toyproject.exchangerate.data.CountryCode).values()}"
+                        th:value="${code}" th:text="${code.displayCountryCode}"
+                        ></option>
+            </select>
+        </div>
+
+    </div>
+</body>
+</html>
