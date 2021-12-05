@@ -7,4 +7,6 @@ import lombok.Setter;
 @Setter
 public class ExchangeRateDto {
     private String countryCode;
+    private int exchangeRate;
+    private int receptionAmount;
 }

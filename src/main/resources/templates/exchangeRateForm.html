@@ -2,6 +2,7 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link th:href="@{/css/bootstrap.min.css}"
             href="../css/bootstrap.min.css" rel="stylesheet">
     <title>환율계산기</title>
@@ -11,6 +12,39 @@
          max-width: 560px;
      }
     </style>
+
+    <script type="text/javascript">
+
+    	$(document).ready(function(){
+    	    var countryCode = $("#countryCode option:selected").val();
+    	    $.ajax(
+            {
+                type: "GET",
+                url: "/exchange-rate/"+countryCode,
+                async: true,
+                contentType : 'application/json; charset=UTF-8',
+                data: {},
+                error : function(error) {
+                    alert("Error!");
+                },
+                success : function(data) {
+                    alert("success!"+data.exchangeRate);
+                    $("#exchangeRate").text(data.exchangeRate);
+                }
+            });
+        });
+
+        function getExchangeRate(countryCode) {
+            $.ajax(
+            {
+                type: "GET",
+                url: "/exchange-rate/"+countryCode,
+                async: true
+            });
+        }
+    </script>
+
+
 </head>
 <body>
     <div class="container">
@@ -26,11 +60,21 @@
 
         <div class="container">
             <label>수취국가: </label>
-            <select id="countryCode" name="countryCode" th:onchange="|location.href='@{/exchange-rate/{code}(code=${countryCode})}'|">
+            <select id="countryCode" name="countryCode"  onchange="getExchangeRate(this.value)">
                 <option th:each="code : ${T(toyproject.exchangerate.data.CountryCode).values()}"
                         th:value="${code}" th:text="${code.description}"
                         ></option>
             </select>
+        </div>
+
+        <div class="container">
+            <label>환율: </label>
+            <label id="exchangeRate" name="exchangeRate" th:text="${exchangeRateDto.exchangeRate}">0</label>
+        </div>
+
+        <div class="container">
+            <label>송금액: </label>
+            <input type="text" id="receptionAmount" name="receptionAmount" th:value="${exchangeRateDto.receptionAmount}" value="0">
         </div>
 
     </div>
