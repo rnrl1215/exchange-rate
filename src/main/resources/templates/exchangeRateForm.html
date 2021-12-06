@@ -16,6 +16,10 @@
     <script type="text/javascript">
 
     	$(document).ready(function(){
+    	    getExchangeRate();
+        });
+
+        function getExchangeRate() {
     	    var countryCode = $("#countryCode option:selected").val();
     	    $.ajax(
             {
@@ -28,18 +32,10 @@
                     alert("Error!");
                 },
                 success : function(data) {
-                    alert("success!"+data.exchangeRate);
-                    $("#exchangeRate").text(data.exchangeRate);
+                    $("#exchangeRateLabel").text(data.exchangeRate);
+                    $("#exchangeRate").val(data.exchangeRate);
+                    $("#countryCodeUSD").text(countryCode+"/USD");
                 }
-            });
-        });
-
-        function getExchangeRate(countryCode) {
-            $.ajax(
-            {
-                type: "GET",
-                url: "/exchange-rate/"+countryCode,
-                async: true
             });
         }
     </script>
@@ -58,23 +54,48 @@
             <label>미국(USD)</label>
         </div>
 
-        <div class="container">
-            <label>수취국가: </label>
-            <select id="countryCode" name="countryCode"  onchange="getExchangeRate(this.value)">
-                <option th:each="code : ${T(toyproject.exchangerate.data.CountryCode).values()}"
-                        th:value="${code}" th:text="${code.description}"
-                        ></option>
-            </select>
-        </div>
+        <form action="item.html" th:action="@{/exchange-rate}" method="post">
+
+            <div class="container">
+                <label>수취국가: </label>
+                <select id="countryCode" name="countryCode"  onchange="getExchangeRate(this.value)">
+                    <option
+                            th:each="code : ${T(toyproject.exchangerate.data.CountryCode).values()}"
+                        th:value="${code}"
+                        th:text="${code.description}"
+                    ></option>
+                </select>
+            </div>
+
+            <div class="container">
+                <label>환율: </label>
+                <label id="exchangeRateLabel" name="exchangeRateLabel" th:text="${exchangeRateDto.exchangeRate}"></label>
+                <input type="hidden" id="exchangeRate" name="exchangeRate" th:value="${exchangeRateDto.exchangeRate}" value="0">
+                <label id="countryCodeUSD" ></label>
+            </div>
+
+           <div class="container">
+                <label>송금액: </label>
+                <input type="text" id="receptionAmount" name="receptionAmount" th:value="${exchangeRateDto.receptionAmount}" value="0">
+                <label>USD</label>
+            </div>
+
+            <br>
+
+            <div class="container">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+
+        <br>
 
         <div class="container">
-            <label>환율: </label>
-            <label id="exchangeRate" name="exchangeRate" th:text="${exchangeRateDto.exchangeRate}">0</label>
-        </div>
-
-        <div class="container">
-            <label>송금액: </label>
-            <input type="text" id="receptionAmount" name="receptionAmount" th:value="${exchangeRateDto.receptionAmount}" value="0">
+        <th:block th:if="${exchangeRateDto.status}">
+            <label>수취금액은</label>
+            <label th:text="${exchangeRateDto.receptionAmount}"></label>
+            <label th:text="${exchangeRateDto.countryCode}"></label>
+            <label> 입니다.</label>
+        </th:block>
         </div>
 
     </div>

@@ -9,4 +9,5 @@ public class ExchangeRateDto {
     private String countryCode;
     private int exchangeRate;
     private int receptionAmount;
+    boolean status = false;
 }
