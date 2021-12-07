@@ -1,0 +1,4 @@
+property:
+  exchange-rate-api-accesskey: 6408fc6fc21b031866843c7c0faac12e
+  exchange-rate-api-url: http://api.currencylayer.com/
+  exchange-rate-api-live: live

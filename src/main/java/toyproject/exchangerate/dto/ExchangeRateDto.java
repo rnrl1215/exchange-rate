@@ -8,7 +8,8 @@ import toyproject.exchangerate.data.CountryCode;
 @Setter
 public class ExchangeRateDto {
     private CountryCode countryCode;
-    private int exchangeRate;
-    private int receptionAmount;
+    private double exchangeRate;
+    private double receptionAmount;
+    private int remittanceAmount;
     boolean status = false;
 }

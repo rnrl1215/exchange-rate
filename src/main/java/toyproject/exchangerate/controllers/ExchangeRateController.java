@@ -1,17 +1,24 @@
 package toyproject.exchangerate.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import toyproject.exchangerate.data.CountryCode;
 import toyproject.exchangerate.dto.ExchangeRateDto;
 import toyproject.exchangerate.service.ExchangeRateService;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class ExchangeRateController {
 
     private final ExchangeRateService exchangeRateService;
+
 
     @GetMapping(value = "/exchange-rate")
     public String getExchangeForm(Model model) {
@@ -22,20 +29,32 @@ public class ExchangeRateController {
 
     @ResponseBody
     @GetMapping(value = "/exchange-rate/{countryCode}")
-    public ExchangeRateDto getExchangeRate(@PathVariable(value = "countryCode") String countryCode, Model model) {
+    public ExchangeRateDto getExchangeRate(@PathVariable(value = "countryCode") CountryCode countryCode, Model model) {
         ExchangeRateDto exchangeRateDto = new ExchangeRateDto();
-        exchangeRateDto.setExchangeRate(1000);
+        double exchangeRate = exchangeRateService.getExchangeRate(countryCode);
+        exchangeRateDto.setExchangeRate(exchangeRate);
         return exchangeRateDto;
     }
 
     @PostMapping(value = "/exchange-rate")
-    public String getReceptionAmount(@ModelAttribute ExchangeRateDto exchangeRateDto, Model model) {
-        System.out.println("POST: "+exchangeRateDto.getExchangeRate());
-        System.out.println("POST: "+exchangeRateDto.getCountryCode().getDescription());
-        System.out.println("POST: "+exchangeRateDto.getReceptionAmount());
-        exchangeRateDto.setStatus(true);
+    public String getReceptionAmount(@RequestParam("exchangeRate") double exchangeRate,
+                                     @RequestParam("countryCode") CountryCode countryCode,
+                                     @RequestParam("remittanceAmount") int remittanceAmount,
+                                     Model model) {
 
-        exchangeRateService.getExchangeRate(exchangeRateDto.getCountryCode());
+
+        log.info("exchangeRate ={}",exchangeRate);
+
+        ExchangeRateDto exchangeRateDto = new ExchangeRateDto();
+
+
+        exchangeRateDto.setExchangeRate(exchangeRate);
+        exchangeRateDto.setCountryCode(countryCode);
+        exchangeRateDto.setRemittanceAmount(remittanceAmount);
+
+       // double receptionAmount = exchangeRateService.getReceptionAmount(countryCode, remittanceAmount);
+        // exchangeRateDto.setReceptionAmount(receptionAmount);
+        exchangeRateDto.setStatus(true);
 
         model.addAttribute("exchangeRateDto",exchangeRateDto);
         return "/exchangeRateForm";
