@@ -39,13 +39,10 @@
             });
         }
 
-
         function getReceptionAmount(event) {
             var countryCode = $("#countryCode option:selected").val();
-            var exchangeRate  = 1.0;
-            var remittanceAmount = 100;
-
-            var sendData = {"exchangeRate":11.0}
+            var exchangeRate = document.getElementById("exchangeRate").value;
+            var remittanceAmount = document.getElementById("remittanceAmount").value;
 
     	    $.ajax(
             {
@@ -53,14 +50,13 @@
                 url: "/exchange-rate",
                 async: true,
                 contentType : 'application/json; charset=UTF-8',
-                data: sendData,
-                error : function(error) {
-                    alert("Error!");
-                },
-                success : function(data) {
-                   alert("성공");
-                }
+                data: JSON.stringify({"exchangeRate":exchangeRate,
+                                       "countryCode":countryCode,
+                                       "remittanceAmount":remittanceAmount})
+            }).done(function (fragment) {
+                $("#resultDiv").replaceWith(fragment);
             });
+
         }
 
     </script>
@@ -79,7 +75,7 @@
             <label>미국(USD)</label>
         </div>
 
-        <form id="exchangeRateForm">
+        <form id="exchangeRateForm" th:action="@{/exchange-rate/amount}" method="GET">
 
             <div class="container">
                 <label>수취국가: </label>
@@ -113,7 +109,7 @@
 
         <br>
 
-        <div class="container">
+        <div class="container" id="resultDiv">
         <th:block th:if="${exchangeRateDto.status}">
             <label>수취금액은</label>
             <label th:text="${exchangeRateDto.receptionAmount}"></label>

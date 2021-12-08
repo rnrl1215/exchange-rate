@@ -31,32 +31,23 @@ public class ExchangeRateController {
     @GetMapping(value = "/exchange-rate/{countryCode}")
     public ExchangeRateDto getExchangeRate(@PathVariable(value = "countryCode") CountryCode countryCode, Model model) {
         ExchangeRateDto exchangeRateDto = new ExchangeRateDto();
-        double exchangeRate = exchangeRateService.getExchangeRate(countryCode);
-        exchangeRateDto.setExchangeRate(exchangeRate);
+        //double exchangeRate = exchangeRateService.getExchangeRate(countryCode);
+        //exchangeRateDto.setExchangeRate(exchangeRate);
         return exchangeRateDto;
     }
 
     @PostMapping(value = "/exchange-rate")
-    public String getReceptionAmount(@RequestParam("exchangeRate") double exchangeRate,
-                                     @RequestParam("countryCode") CountryCode countryCode,
-                                     @RequestParam("remittanceAmount") int remittanceAmount,
-                                     Model model) {
+    public String getReceptionAmount(@RequestBody ExchangeRateDto exchangeRateDto
+                                                 ,Model model) {
 
+        double exchangeRate = exchangeRateDto.getExchangeRate();
+        double remittanceAmount = exchangeRateDto.getRemittanceAmount();
+        double receptionAmount = exchangeRateService.getReceptionAmount(exchangeRate, remittanceAmount);
 
-        log.info("exchangeRate ={}",exchangeRate);
-
-        ExchangeRateDto exchangeRateDto = new ExchangeRateDto();
-
-
-        exchangeRateDto.setExchangeRate(exchangeRate);
-        exchangeRateDto.setCountryCode(countryCode);
-        exchangeRateDto.setRemittanceAmount(remittanceAmount);
-
-       // double receptionAmount = exchangeRateService.getReceptionAmount(countryCode, remittanceAmount);
-        // exchangeRateDto.setReceptionAmount(receptionAmount);
+        exchangeRateDto.setReceptionAmount(receptionAmount);
         exchangeRateDto.setStatus(true);
 
         model.addAttribute("exchangeRateDto",exchangeRateDto);
-        return "/exchangeRateForm";
+        return "/exchangeRateForm :: #resultDiv";
     }
 }

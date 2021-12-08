@@ -2,10 +2,7 @@ package toyproject.exchangerate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import okhttp3.*;
 
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -64,8 +61,15 @@ public class ExchangeRateService {
         return exchangeRage;
     }
 
-    public double getReceptionAmount(CountryCode countryCode, double remittanceAmount) {
-        double receptionAmount =  remittanceAmount * getExchangeRate(countryCode);
+    public double getReceptionAmount(double exchangeRate, double remittanceAmount) throws IllegalArgumentException {
+
+        if (exchangeRate == 0.0) {
+            throw new IllegalArgumentException("환율값이 잘못 되었습니다.");
+        } else if (remittanceAmount == 0.0 || remittanceAmount > 10000 ) {
+            throw new IllegalArgumentException("송금액이 바르지 않습니다.");
+        }
+
+        double receptionAmount =  remittanceAmount * exchangeRate;
         return receptionAmount;
     }
 }
