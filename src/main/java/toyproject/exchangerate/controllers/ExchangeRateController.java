@@ -9,6 +9,9 @@ import toyproject.exchangerate.data.CountryCode;
 import toyproject.exchangerate.dto.ExchangeRateDto;
 import toyproject.exchangerate.service.ExchangeRateService;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -38,8 +41,8 @@ public class ExchangeRateController {
 
         double exchangeRate = exchangeRateDto.getExchangeRate();
         double remittanceAmount = exchangeRateDto.getRemittanceAmount();
-        double receptionAmount = exchangeRateService.getReceptionAmount(exchangeRate, remittanceAmount);
 
+        BigDecimal receptionAmount = exchangeRateService.getReceptionAmount(exchangeRate, remittanceAmount);
         exchangeRateDto.setReceptionAmount(receptionAmount);
         exchangeRateDto.setStatus(true);
 

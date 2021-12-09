@@ -29,7 +29,7 @@
                 contentType : 'application/json; charset=UTF-8',
                 data: {},
                 error : function(error) {
-                    alert("Error!");
+                    alert("환율 정보를 가져오지 못했습니다.");
                 },
                 success : function(data) {
                     $("#exchangeRateLabel").text(data.exchangeRate);
@@ -116,7 +116,7 @@
 
             <th:block th:if="${error == null && exchangeRateDto.status}">
             <label>수취금액은</label>
-            <label th:text="${exchangeRateDto.receptionAmount}"></label>
+            <label th:text="${#numbers.formatDecimal(exchangeRateDto.receptionAmount,3,'COMMA',2,'POINT')}"></label>
             <label th:text="${exchangeRateDto.countryCode}"></label>
             <label> 입니다.</label>
         </th:block>

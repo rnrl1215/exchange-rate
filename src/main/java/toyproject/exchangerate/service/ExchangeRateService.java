@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import toyproject.exchangerate.configure.ExchangeRateProperties;
 import toyproject.exchangerate.data.CountryCode;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,7 +25,6 @@ public class ExchangeRateService {
 
         try {
             String url = exchangeRateProperties.getUrl();
-            log.info("url ={}", url);
             String live = exchangeRateProperties.getLive();
             String key = exchangeRateProperties.getApiAccessKey();
 
@@ -32,6 +33,7 @@ public class ExchangeRateService {
                     + "& source = USD"
                     + "&format = 1";
 
+            log.info("url ={}",apiUrl);
 
             OkHttpClient client = new OkHttpClient();
             Request.Builder builder = new Request.Builder().url(apiUrl).get();
@@ -59,7 +61,7 @@ public class ExchangeRateService {
         return exchangeRage;
     }
 
-    public double getReceptionAmount(double exchangeRate, double remittanceAmount) throws IllegalArgumentException {
+    public BigDecimal getReceptionAmount(double exchangeRate, double remittanceAmount) throws IllegalArgumentException {
 
         if (exchangeRate == 0.0) {
             throw new IllegalArgumentException("환율값이 잘못 되었습니다.");
@@ -67,7 +69,10 @@ public class ExchangeRateService {
             throw new IllegalArgumentException("송금액이 바르지 않습니다.");
         }
 
-        double receptionAmount =  remittanceAmount * exchangeRate;
-        return receptionAmount;
+        BigDecimal remittanceAmountBig = new BigDecimal(String.valueOf(exchangeRate));
+        BigDecimal exchangeRateBig = new BigDecimal(String.valueOf(remittanceAmount));
+
+        BigDecimal receptionAmountBig = remittanceAmountBig.multiply(exchangeRateBig);
+        return receptionAmountBig;
     }
 }
