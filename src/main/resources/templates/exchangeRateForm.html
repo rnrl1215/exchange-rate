@@ -52,7 +52,10 @@
                 contentType : 'application/json; charset=UTF-8',
                 data: JSON.stringify({"exchangeRate":exchangeRate,
                                        "countryCode":countryCode,
-                                       "remittanceAmount":remittanceAmount})
+                                       "remittanceAmount":remittanceAmount}),
+                error : function(error) {
+                    alert("입력값 이문제가 있거나 수취금액 계산을 실패 했습니다.");
+                }
             }).done(function (fragment) {
                 $("#resultDiv").replaceWith(fragment);
             });
@@ -75,7 +78,7 @@
             <label>미국(USD)</label>
         </div>
 
-        <form id="exchangeRateForm" th:action="@{/exchange-rate/amount}" method="GET">
+        <form id="exchangeRateForm">
 
             <div class="container">
                 <label>수취국가: </label>
