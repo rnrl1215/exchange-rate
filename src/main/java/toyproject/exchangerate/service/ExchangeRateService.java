@@ -1,5 +1,6 @@
 package toyproject.exchangerate.service;
 
+import com.sun.jdi.InternalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -16,11 +17,6 @@ public class ExchangeRateService {
 
     private final ExchangeRateProperties exchangeRateProperties;
 
-
-    public static final String BASE_URL = "http://api.currencylayer.com/";
-    public static final String ENDPOINT = "live";
-
-    // this object is used for executing requests to the (REST) API
     public double getExchangeRate(CountryCode countryCode) {
 
         double exchangeRage = 0.0;
@@ -50,12 +46,14 @@ public class ExchangeRateService {
                     JSONObject jsonObject = new JSONObject(body.string());
                     exchangeRage = jsonObject.getJSONObject("quotes").getDouble(currentCountryCode);
                     // TODO: exchageRate == 0 일때 익셉션 발생
+                } else {
+                    throw new InternalException("환율 정보를 가져오지 못했습니다.");
                 }
             } else {
-                System.out.println("Error");
+                throw new InternalException("환율 정보를 가져오지 못했습니다.");
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw new InternalException(e.getMessage());
         }
 
         return exchangeRage;

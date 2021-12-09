@@ -110,7 +110,11 @@
         <br>
 
         <div class="container" id="resultDiv">
-        <th:block th:if="${exchangeRateDto.status}">
+            <th:block th:if="${error!=null}">
+                <label th:text="${error}"></label>
+            </th:block>
+
+            <th:block th:if="${error == null && exchangeRateDto.status}">
             <label>수취금액은</label>
             <label th:text="${exchangeRateDto.receptionAmount}"></label>
             <label th:text="${exchangeRateDto.countryCode}"></label>
