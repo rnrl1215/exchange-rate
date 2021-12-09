@@ -19,7 +19,7 @@ public class ExchangeRateService {
 
     private final ExchangeRateProperties exchangeRateProperties;
 
-    public double getExchangeRate(CountryCode countryCode) {
+    public double getExchangeRate(CountryCode countryCode) throws InternalException {
 
         double exchangeRage = 0.0;
 
