@@ -40,7 +40,11 @@ public class ExchangeRateController {
                                                  ,Model model) {
 
         double exchangeRate = exchangeRateDto.getExchangeRate();
-        double remittanceAmount = exchangeRateDto.getRemittanceAmount();
+        int remittanceAmount = exchangeRateDto.getRemittanceAmount();
+
+        ExchangeRateDto exchangeRateDtoTmp = new ExchangeRateDto();
+        exchangeRateDtoTmp.setExchangeRate(exchangeRate);
+        exchangeRateDtoTmp.setRemittanceAmount(remittanceAmount);
 
         BigDecimal receptionAmount = exchangeRateService.getReceptionAmount(exchangeRate, remittanceAmount);
         exchangeRateDto.setReceptionAmount(receptionAmount);

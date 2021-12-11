@@ -61,7 +61,7 @@ public class ExchangeRateService {
         return exchangeRage;
     }
 
-    public BigDecimal getReceptionAmount(double exchangeRate, double remittanceAmount) throws IllegalArgumentException {
+    public BigDecimal getReceptionAmount(double exchangeRate, int remittanceAmount) throws IllegalArgumentException {
 
         if (exchangeRate == 0.0) {
             throw new IllegalArgumentException("환율값이 잘못 되었습니다.");
