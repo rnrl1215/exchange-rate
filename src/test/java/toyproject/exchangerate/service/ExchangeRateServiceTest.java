@@ -31,10 +31,8 @@ class ExchangeRateServiceTest {
     void getReceptionAmount() {
         double exchangeRate = 2.0;
         int remittanceAmount = 100;
-
         BigDecimal exchangeRateBig = new BigDecimal(String.valueOf(exchangeRate));
         BigDecimal remittanceAmountBig = new BigDecimal(String.valueOf(remittanceAmount));
-
         BigDecimal result = exchangeRateBig.multiply(remittanceAmountBig);
 
         BigDecimal receptionAmount = exchangeRateService.getReceptionAmount(exchangeRate, remittanceAmount);
