@@ -28,9 +28,9 @@ public class ExchangeRateService {
             String live = exchangeRateProperties.getLive();
             String key = exchangeRateProperties.getApiAccessKey();
 
-            String apiUrl = url + live + "?access_key="+key
-                    + "& currencies=KRW,PHP,JPY"
-                    + "& source = USD"
+            String apiUrl = url + live + "?access_key = "+key
+                    + "&currencies = KRW,PHP,JPY"
+                    + "&source = USD"
                     + "&format = 1";
 
             log.info("url ={}",apiUrl);
