@@ -21,7 +21,7 @@ public class ExchangeRateService {
 
     public double getExchangeRate(CountryCode countryCode) throws InternalException {
 
-        double exchangeRage = 0.0;
+        double exchangeRate = 0.0;
 
         try {
             String url = exchangeRateProperties.getUrl();
@@ -46,8 +46,11 @@ public class ExchangeRateService {
                 if (body != null) {
                     String currentCountryCode = "USD"+countryCode;
                     JSONObject jsonObject = new JSONObject(body.string());
-                    exchangeRage = jsonObject.getJSONObject("quotes").getDouble(currentCountryCode);
-                    // TODO: exchageRate == 0 일때 익셉션 발생
+                    exchangeRate = jsonObject.getJSONObject("quotes").getDouble(currentCountryCode);
+
+                    if (exchangeRate == 0.0) {
+                        throw new InternalException("환율 정보를 가져오지 못했습니다.");
+                    }
                 } else {
                     throw new InternalException("환율 정보를 가져오지 못했습니다.");
                 }
@@ -58,7 +61,7 @@ public class ExchangeRateService {
             throw new InternalException(e.getMessage());
         }
 
-        return exchangeRage;
+        return exchangeRate;
     }
 
     public BigDecimal getReceptionAmount(double exchangeRate, int remittanceAmount) throws IllegalArgumentException {
