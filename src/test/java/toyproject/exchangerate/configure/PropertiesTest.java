@@ -18,21 +18,21 @@ class PropertiesTest {
     @Test
     void getAccessKey() {
         String apiAccessKey = exchangeRateProperties.getApiAccessKey();
-        log.info("api key log={}", apiAccessKey);
+        //log.info("api key log={}", apiAccessKey);
         org.assertj.core.api.Assertions.assertThat(apiAccessKey).isNotEmpty();
     }
 
     @Test
     void getUrl() {
         String apiUrl = exchangeRateProperties.getUrl();
-        log.info("api url log={}", apiUrl);
+        //log.info("api url log={}", apiUrl);
         org.assertj.core.api.Assertions.assertThat(apiUrl).isNotEmpty();
     }
 
     @Test
     void getLive() {
         String live = exchangeRateProperties.getLive();
-        log.info("api live log={}", live);
+        //log.info("api live log={}", live);
         org.assertj.core.api.Assertions.assertThat(live).isNotEmpty();
     }
 }
